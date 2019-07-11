@@ -1,0 +1,125 @@
+mysql> create database STUDENT;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use STUDENT;
+Database changed
+mysql> create table O_Rollcall(rollno int primary key,name varchar(20),address varchar(30));
+Query OK, 0 rows affected (0.80 sec)
+
+mysql> insert into O_Rollcall values(1,'Dhanashree','Pune');
+Query OK, 1 row affected (0.42 sec)
+
+mysql> insert into O_Rollcall values(2,'Rutuja','Nasik');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into O_Rollcall values(3,'Snehal','Satara');
+Query OK, 1 row affected (0.41 sec)
+
+mysql> select * from O_Rollcall;
++--------+------------+---------+
+| rollno | name       | address |
++--------+------------+---------+
+|      1 | Dhanashree | Pune    |
+|      2 | Rutuja     | Nasik   |
+|      3 | Snehal     | Satara  |
++--------+------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> create table N_Rollcall(rollno int primary key,name varchar(20),address varchar(30));
+Query OK, 0 rows affected (0.89 sec)
+
+mysql> insert into N_Rollcall(select  * from O_Rollcall);
+Query OK, 3 rows affected (0.49 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from N_Rollcall;
++--------+------------+---------+
+| rollno | name       | address |
++--------+------------+---------+
+|      1 | Dhanashree | Pune    |
+|      2 | Rutuja     | Nasik   |
+|      3 | Snehal     | Satara  |
++--------+------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> delete from N_Rollcall;
+Query OK, 3 rows affected (0.45 sec)
+
+mysql> select * from N_Rollcall;
+Empty set (0.00 sec)
+
+mysql>  create procedure newcursor2(IN rollno1 int)
+    ->      begin
+    ->      declare rollno2 int;
+    ->      declare exit_loop boolean;
+    ->      declare c1 cursor for select rollno from O_Rollcall where rollno=rollno1 ;
+    ->    declare continue handler for not found set exit_loop=true;
+    ->   open c1;
+    ->  emp_loop:loop
+    ->  fetch c1 into rollno2;
+    -> if not exists (select * from N_Rollcall where rollno=rollno2) then
+    ->  insert into N_Rollcall select * from O_Rollcall where rollno=rollno2;
+    -> end if;
+    -> if exit_loop then
+    -> close c1;
+    -> leave emp_loop;
+    -> end if;
+    -> end loop emp_loop;
+    -> end#
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter ;
+mysql> call newcursor2(1);
+Query OK, 0 rows affected (0.41 sec)
+
+mysql> select * from N_Rollcall;
++--------+------------+---------+
+| rollno | name       | address |
++--------+------------+---------+
+|      1 | Dhanashree | Pune    |
++--------+------------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from O_Rollcall;
++--------+------------+---------+
+| rollno | name       | address |
++--------+------------+---------+
+|      1 | Dhanashree | Pune    |
+|      2 | Rutuja     | Nasik   |
+|      3 | Snehal     | Satara  |
++--------+------------+---------+
+3 rows in set (0.00 sec)
+
+mysql> call newcursor2(4);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from N_Rollcall;
++--------+------------+---------+
+| rollno | name       | address |
++--------+------------+---------+
+|      1 | Dhanashree | Pune    |
++--------+------------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from O_Rollcall;
++--------+------------+---------+
+| rollno | name       | address |
++--------+------------+---------+
+|      1 | Dhanashree | Pune    |
+|      2 | Rutuja     | Nasik   |
+|      3 | Snehal     | Satara  |
++--------+------------+---------+
+3 rows in set (0.01 sec)
+
+mysql> call newcursor2(1);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from N_Rollcall;
++--------+------------+---------+
+| rollno | name       | address |
++--------+------------+---------+
+|      1 | Dhanashree | Pune    |
++--------+------------+---------+
+1 row in set (0.00 sec)
+
+

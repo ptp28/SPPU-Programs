@@ -1,0 +1,254 @@
+<HTML>
+	<HEAD>
+		<LINK REL="STYLESHEET" TYPE="TEXT/CSS" HREF="CSS.css">
+		<TITLE>
+			HTML+CSS 
+		</TITLE>	
+	</HEAD>
+	<BODY>
+		<CENTER>
+		<DIV class="headerDiv"> 
+			<H1 class="heading">STUDENT REGISTRATION</H1> 
+		</DIV>
+		<DIV class="formDiv">
+		<DIV class="formCover">
+		<FORM>
+			<TABLE class="tableForm">
+				<TR>
+					<TD>
+						ENTER FIRST NAME : 
+					</TD>
+					<TD>
+						<INPUT TYPE="TEXT" PLACEHOLDER="FIRST NAME" id="fname">
+					</TD>	
+				</TR>
+				<TR>
+						<TD>
+							ENTER LAST NAME : 
+						</TD>
+						<TD>
+							<INPUT TYPE="TEXT" PLACEHOLDER="LAST NAME" id="lname">
+						</TD>	
+					</TR>
+				<TR>
+					<TD>
+						GENDER : 
+					</TD>
+					<TD>
+						<INPUT TYPE="RADIO" name="gender" value="male">MALE</INPUT>
+						<INPUT TYPE="RADIO" name="gender" value="female">FEMALE</INPUT>
+					</TD>	
+				</TR>
+				<TR>
+					<TD>
+						ENTER ROLL. NO :
+					</TD>
+					<TD>
+						<INPUT TYPE="TEXT" PLACEHOLDER="ROLL NUMBER" id="rno">
+					</TD>	
+				</TR>
+				<TR>
+					<TD>
+						ENTER YEAR :
+					</TD>
+					<TD>
+						<SELECT id="year">
+							<OPTION DISABLED SELECTED> --- YEAR --- </OPTION>
+							<OPTION value="FE"> FIRST YEAR </OPTION>
+							<OPTION value="SE"> SECOND YEAR </OPTION>
+							<OPTION value="TE"> THIRD YEAR </OPTION>
+							<OPTION value="BE"> FOURTH YEAR </OPTION>
+						</SELECT>
+					</TD>	
+				</TR>
+				<TR>
+					<TD>
+						ENTER AVG. MARKS :
+					</TD>
+					<TD>
+						<INPUT TYPE="number" PLACEHOLDER="AVG. MARKS" id="marks">
+					</TD>	
+				</TR>
+				<TR>
+					<TD>
+						ENTER EMAIL-ID : 
+					</TD>
+					<TD>
+						<INPUT TYPE="EMAIL" PLACEHOLDER="EMAIL" id="email">
+					</TD>	
+				</TR>
+				<TR>
+					<TD>
+						ENTER PHONE NUMBER : 
+					</TD>
+					<TD>
+						<INPUT TYPE="NUMBER" PLACEHOLDER="PHONE NUMBER" id="number">
+					</TD>	
+				</TR>
+				<TR>
+					<TD>
+						ENTER PASSWORD : 
+					</TD>
+					<TD>
+						<INPUT TYPE="PASSWORD" PLACEHOLDER="PASSWORD" id="pass1">
+					</TD>	
+				</TR>
+				<TR>
+					<TD>
+						CONFIRM PASSWORD : 
+					</TD>
+					<TD>
+						<INPUT TYPE="PASSWORD" PLACEHOLDER="CONFIRM PASSWORD" id="pass2">
+					</TD>	
+				</TR>
+				<TR>
+					<TD>
+						<INPUT TYPE="button" VALUE="SUBMIT" class="submit" onclick="FormSubmit();">
+					</TD>
+					<TD>
+						<INPUT TYPE="BUTTON" VALUE="CLEAR" class="clear" onclick="FormCancel();">
+					</TD>
+				</TR>
+			</TABLE>
+		</FORM>
+		</DIV>
+		</DIV>
+		</CENTER>
+	</BODY>
+	<SCRIPT>
+		var emailFlag = false;
+		var marksFlag = false;
+		var nameFlag = false;
+		var passFlag = false;
+		var pass2Flag = false;
+		var	phoneFlag = false;
+		var rnoFlag = false;
+
+		function FormSubmit()
+		{
+			checkEmail();
+			checkMarks();
+			checkName();
+			checkPassword();
+			checkPassword2();
+			checkPhone();
+			checkRollNo();
+			if(emailFlag && marksFlag && nameFlag && passFlag && pass2Flag && phoneFlag && rnoFlag)
+			{
+				alert("ALL DETAILS ARE VALIDATED\nREGISTRATION SUCESSFUL");
+			}
+		}
+		function FormCancel()
+		{
+			alert("ARE YOU SURE YOU WANT TO CLEAR THE PAGE ? ");
+		}
+
+		function checkEmail()
+		{
+			var email = document.getElementById("email").value;
+			var regex= /^[a-z]+[0-9]*[@][a-z]+[.][a-z]+$/;
+			var isvalid= regex.test(email);
+			if(isvalid)
+			{
+				emailFlag = true;
+			}
+			else
+			{
+				emailFlag = false;
+				alert("Entered EMAIL-ID is INVALID");
+			}
+		}
+
+		function checkName()
+		{
+			var fname = document.getElementById("fname").value;
+			var lname = document.getElementById("lname").value;
+			var regex= /^[A-Za-z]*$/;
+			var isvalid= regex.test(fname);
+			var isvalid2= regex.test(lname);
+			if(isvalid && isvalid2)
+			{
+				nameFlag = true;
+			}
+			else
+			{
+				nameFlag = false;
+				alert("Entered NAME is INVALID");
+			}
+		}
+
+		function checkMarks()
+		{
+			var marks = document.getElementById("marks").value;
+			if(isNaN(marks))
+			{
+				marksFlag = false;
+				alert("Entered MARKS are INVALID");
+
+			}
+			else
+			{
+				marksFlag = true;	
+			}
+		}
+
+		function checkPassword()
+		{
+			var pass1 = document.getElementById("pass1").value;
+			var regex= /^[A-Za-z0-9]+$/;
+			var isvalid= regex.test(pass1);
+			if(isvalid)
+			{
+				passFlag = true;
+			}
+			else
+			{
+				passFlag = false;
+				alert("Entered PASSWORD is INVALID");
+			}
+		}
+
+		function checkPassword2()
+		{
+			var pass1 = document.getElementById("pass1").value;
+			var pass2 = document.getElementById("pass2").value;
+			if(pass1 != pass2)
+			{
+				pass2Flag = false;
+				alert("PASSWORD MISMATCH ERROR");
+			}
+			else
+			{
+				pass2Flag = true;
+			}
+		}
+
+		function checkPhone()
+		{
+			var phone = document.getElementById("phone").value;
+			if(isNaN(phone))
+			{
+				phoneFlag = false;
+				alert("Entered PHONE NUMBER is INVALID");
+			}
+			else
+			{
+				phoneFlag = true;
+			}
+		}
+
+		function checkRollNo()
+		{
+			var rno = document.getElementById("rno").value;
+			if(isNaN(rno))
+			{
+				rnoFlag = false;
+				alert("Entered ROLL NUMBER is INVALID");
+			}
+			else
+			{
+				rnoFlag = true;
+			}
+		}
+	</SCRIPT>
+</HTML>

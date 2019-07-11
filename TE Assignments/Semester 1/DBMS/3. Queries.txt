@@ -1,0 +1,326 @@
+mysql> create database BankEnterprise;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use BankEnterprise;
+Database changed
+
+mysql> create table Branch(branch_name varchar(25) NOT NULL,branch_city varchar(20) NOT NULL,assets int UNIQUE,primary key(branch_name));
+Query OK, 0 rows affected (0.77 sec)
+mysql> insert into Branch values("BIBWEWADI","PUNE",12345);
+Query OK, 1 row affected (0.50 sec)
+mysql> insert into Branch values("SWARGATE","PUNE",20000);
+Query OK, 1 row affected (0.16 sec)
+mysql> insert into Branch values("MEDAD","BARAMATI",40000);
+Query OK, 1 row affected (0.48 sec)
+mysql> select * from Branch;
++-------------+-------------+--------+
+| branch_name | branch_city | assets |
++-------------+-------------+--------+
+| BIBWEWADI   | PUNE        |  12345 |
+| MEDAD       | BARAMATI    |  40000 |
+| SWARGATE    | PUNE        |  20000 |
++-------------+-------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> create table Customer(customer_name varchar(20),customer_street varchar(25),customer_city varchar(20),primary key(customer_name));
+Query OK, 0 rows affected (0.79 sec)
+mysql> insert into Customer values("SANGITA","BIBWEWADI","PUNE");
+Query OK, 1 row affected (0.48 sec)
+mysql> insert into Customer values("ASAWARI","KATRAJ","PUNE");
+Query OK, 1 row affected (0.15 sec)
+mysql> insert into Customer values("MAYUR","DHANKAWADI","MUMBAI");
+Query OK, 1 row affected (0.47 sec)
+mysql> insert into Customer values("AKSHAY","SHINGAD","THANE");
+Query OK, 1 row affected (0.48 sec)
+mysql> select * from Customer;
++---------------+-----------------+---------------+
+| customer_name | customer_street | customer_city |
++---------------+-----------------+---------------+
+| AKSHAY        | SHINGAD         | THANE         |
+| ASAWARI       | KATRAJ          | PUNE          |
+| MAYUR         | DHANKAWADI      | MUMBAI        |
+| SANGITA       | BIBWEWADI       | PUNE          |
++---------------+-----------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> create table Loan(loan_no int,branch_name varchar(25),amount int,primary key(loan_no),foreign key(branch_name) references Branch(branch_name));
+Query OK, 0 rows affected (0.52 sec)
+mysql> insert into Loan values(1,"BIBWEWADI",1200000);
+Query OK, 1 row affected (0.46 sec)
+mysql> insert into Loan values(2,"SWARGATE",1500000);
+Query OK, 1 row affected (0.17 sec)
+mysql> insert into Loan values(3,"SWARGATE",500000);
+Query OK, 1 row affected (0.14 sec)
+mysql> insert into Loan values(4,"SWARGATE",800000);
+Query OK, 1 row affected (0.48 sec)
+mysql> select * from Loan;
++---------+-------------+---------+
+| loan_no | branch_name | amount  |
++---------+-------------+---------+
+|       1 | BIBWEWADI   | 1200000 |
+|       2 | SWARGATE    | 1500000 |
+|       3 | SWARGATE    |  500000 |
+|       4 | SWARGATE    |  800000 |
++---------+-------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> create table Account(account_no int,branch_name varchar(25) NOT NULL,balance int,primary key(account_no),foreign key(branch_name) references Branch(branch_name));
+Query OK, 0 rows affected (0.93 sec)
+mysql> insert into Account values(6501234,"SWARGATE",100000);
+Query OK, 1 row affected (0.42 sec)
+mysql> insert into Account values(6512465,"SWARGATE",7000);
+Query OK, 1 row affected (0.48 sec)
+mysql> insert into Account values(702589,"BIBWEWADI",90000);
+Query OK, 1 row affected (0.49 sec)
+mysql> insert into Account values(7036985,"BIBWEWADI",3000);
+Query OK, 1 row affected (0.40 sec)
+mysql> insert into Account values(1234567,"MEDAD",500);
+Query OK, 1 row affected (0.49 sec)
+mysql> select * from Account;
++------------+-------------+---------+
+| account_no | branch_name | balance |
++------------+-------------+---------+
+|     702589 | BIBWEWADI   |   90000 |
+|    1234567 | MEDAD       |     500 |
+|    6501234 | SWARGATE    |  100000 |
+|    6512465 | SWARGATE    |    7000 |
+|    7036985 | BIBWEWADI   |    3000 |
++------------+-------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> update Account set account_no=7025896 where balance=90000;
+Query OK, 1 row affected (0.49 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> create table Depositer(customer_name varchar(20),account_no int,foreign key(customer_name) references Customer(customer_name));
+Query OK, 0 rows affected (0.77 sec)
+
+mysql> alter table Depositer add foreign key(account_no) references Account(account_no);
+Query OK, 0 rows affected (1.20 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into Depositer values("MAYUR",7025896);
+Query OK, 1 row affected (0.48 sec)
+
+mysql> insert into Depositer values("ASAWARI",1234567);
+Query OK, 1 row affected (0.48 sec)
+
+mysql> insert into Depositer values("SANGITA",7036985);
+Query OK, 1 row affected (0.48 sec)
+
+mysql> insert into Depositer values("AKSHAY",6501234);
+Query OK, 1 row affected (0.48 sec)
+
+mysql> insert into Customer values("SANKET","KATRAJ","PUNE");
+Query OK, 1 row affected (0.48 sec)
+
+mysql> insert into Depositer values("SANKET",6512465);
+Query OK, 1 row affected (0.48 sec)
+
+mysql> select * from Depositer;
++---------------+------------+
+| customer_name | account_no |
++---------------+------------+
+| MAYUR         |    7025896 |
+| ASAWARI       |    1234567 |
+| SANGITA       |    7036985 |
+| AKSHAY        |    6501234 |
+| SANKET        |    6512465 |
++---------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> create table Borrower(loan_no int,customer_name varchar(20),foreign key(loan_no) references Loan(loan_no),foreign key(customer_name) references Customer(customer_name));
+Query OK, 0 rows affected (0.95 sec)
+
+mysql> insert into Borrower values(1,"MAYUR");
+Query OK, 1 row affected (0.48 sec)
+
+mysql> insert into Borrower values(2,"MAYUR");
+Query OK, 1 row affected (0.22 sec)
+
+mysql> insert into Borrower values(3,"ASAWARI");
+Query OK, 1 row affected (0.41 sec)
+
+mysql> insert into Borrower values(4,"SANGITA");
+Query OK, 1 row affected (0.45 sec)
+
+mysql> select * from Borrower;
++---------+---------------+
+| loan_no | customer_name |
++---------+---------------+
+|       1 | MAYUR         |
+|       2 | MAYUR         |
+|       3 | ASAWARI       |
+|       4 | SANGITA       |
++---------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> select distinct branch_name from Loan;
++-------------+
+| branch_name |
++-------------+
+| BIBWEWADI   |
+| SWARGATE    |
++-------------+
+2 rows in set (0.00 sec)
+
+mysql> select loan_no from Loan where branch_name='SWARGATE' and amount>500000;
++---------+
+| loan_no |
++---------+
+|       2 |
+|       4 |
++---------+
+2 rows in set (0.00 sec)
+
+mysql> select loan_no from Loan where amount>=1000000 and amount<=2000000;
++---------+
+| loan_no |
++---------+
+|       1 |
+|       2 |
++---------+
+2 rows in set (0.00 sec)
+
+mysql> select loan_no from Loan where amount between 1000000 and 2000000;
++---------+
+| loan_no |
++---------+
+|       1 |
+|       2 |
++---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from Loan order by amount asc;
++---------+-------------+---------+
+| loan_no | branch_name | amount  |
++---------+-------------+---------+
+|       3 | SWARGATE    |  500000 |
+|       4 | SWARGATE    |  800000 |
+|       1 | BIBWEWADI   | 1200000 |
+|       2 | SWARGATE    | 1500000 |
++---------+-------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Loan order by amount desc;
++---------+-------------+---------+
+| loan_no | branch_name | amount  |
++---------+-------------+---------+
+|       2 | SWARGATE    | 1500000 |
+|       1 | BIBWEWADI   | 1200000 |
+|       4 | SWARGATE    |  800000 |
+|       3 | SWARGATE    |  500000 |
++---------+-------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select avg(amount) from Loan;
++--------------+
+| avg(amount)  |
++--------------+
+| 1000000.0000 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select max(amount) from Loan;
++-------------+
+| max(amount) |
++-------------+
+|     1500000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select min(amount) from Loan;
++-------------+
+| min(amount) |
++-------------+
+|      500000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(amount) from Loan;
++-------------+
+| sum(amount) |
++-------------+
+|     4000000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select count(amount) from Loan;
++---------------+
+| count(amount) |
++---------------+
+|             4 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select customer_name from Borrower union select customer_name from Depositer;
++---------------+
+| customer_name |
++---------------+
+| ASAWARI       |
+| MAYUR         |
+| SANGITA       |
+| AKSHAY        |
+| SANKET        |
++---------------+
+5 rows in set (0.00 sec)
+
+mysql> select customer_name from Borrower union all select customer_name from Depositer;
++---------------+
+| customer_name |
++---------------+
+| ASAWARI       |
+| MAYUR         |
+| MAYUR         |
+| SANGITA       |
+| AKSHAY        |
+| ASAWARI       |
+| MAYUR         |
+| SANGITA       |
+| SANKET        |
++---------------+
+9 rows in set (0.00 sec)
+
+mysql> delete from Account where balance<(select avg(balance));
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Account;
++------------+-------------+---------+
+| account_no | branch_name | balance |
++------------+-------------+---------+
+|    1234567 | MEDAD       |     500 |
+|    6501234 | SWARGATE    |  100000 |
+|    6512465 | SWARGATE    |    7000 |
+|    7025896 | BIBWEWADI   |   90000 |
+|    7036985 | BIBWEWADI   |    3000 |
++------------+-------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select customer_name from Borrower where customer_name not in (select customer_name from Depositer);
+Empty set (0.00 sec)
+
+mysql> update Account set balance=balance*0.05;
+Query OK, 5 rows affected (0.53 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> select balance from Account;
++---------+
+| balance |
++---------+
+|      25 |
+|    5000 |
+|     350 |
+|    4500 |
+|     150 |
++---------+
+5 rows in set (0.00 sec)
+
+mysql> update Account set balance=balance-0.05 where balance>(select avg(balance));
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> update Account set balance=balance+0.05 where balance=150;
+Query OK, 0 rows affected (0.14 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+

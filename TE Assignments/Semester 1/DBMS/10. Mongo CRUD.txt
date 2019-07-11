@@ -1,0 +1,84 @@
+> use electiondb;
+switched to db electiondb
+> db.createCollection("vote");
+{ "ok" : 1 }
+> db.vote.insert({wardn:1,name:"a",percent:60});
+WriteResult({ "nInserted" : 1 })
+> db.vote.insert({wardn:2,name:"b",percent:34});
+WriteResult({ "nInserted" : 1 })
+> db.vote.insert({_id:1,wardn:3,name:"c",percent:64});
+WriteResult({ "nInserted" : 1 })
+> 
+
+
+
+> db.vote.insert({_id:2,wardn:4,name:"d",percent:67});
+WriteResult({ "nInserted" : 1 })
+> db.vote.find().pretty();
+{
+	"_id" : ObjectId("5ba4a21cd8c28f178a70b4d2"),
+	"wardn" : 1,
+	"name" : "a",
+	"percent" : 60
+}
+{
+	"_id" : ObjectId("5ba4a22cd8c28f178a70b4d3"),
+	"wardn" : 2,
+	"name" : "b",
+	"percent" : 34
+}
+{ "_id" : 1, "wardn" : 3, "name" : "c", "percent" : 64 }
+{ "_id" : 2, "wardn" : 4, "name" : "d", "percent" : 67 }
+> db.vote.findOne();
+{
+	"_id" : ObjectId("5ba4a21cd8c28f178a70b4d2"),
+	"wardn" : 1,
+	"name" : "a",
+	"percent" : 60
+}
+> db.vote.update({name:"b"},{$set:{percent:52}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.vote.update({name:"b"},{$set:{percent:52}},{multi:true});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 0 })
+> db.vote.update({name:"b"},{$set:{percent:52}},{upsert:true});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 0 })
+> db.vote.update({name:"a"},{$set:{percent:56}},{upsert:true});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.vote.save({_id:ObjectId("5ba4a21cd8c28f178a70b4d2"),name:"prabhatnagar",percent:90});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.vote.find().pretty();
+{
+	"_id" : ObjectId("5ba4a21cd8c28f178a70b4d2"),
+	"name" : "prabhatnagar",
+	"percent" : 90
+}
+{
+	"_id" : ObjectId("5ba4a22cd8c28f178a70b4d3"),
+	"wardn" : 2,
+	"name" : "b",
+	"percent" : 52
+}
+{ "_id" : 1, "wardn" : 3, "name" : "c", "percent" : 64 }
+{ "_id" : 2, "wardn" : 4, "name" : "d", "percent" : 67 }
+
+> db.vote.remove({name:"b"});
+WriteResult({ "nRemoved" : 1 })
+> db.vote.remove({name:"a"},1);
+WriteResult({ "nRemoved" : 0 })
+> db.vote.remove({name:"c"},1);
+WriteResult({ "nRemoved" : 1 })
+
+> db.vote.remove({})
+WriteResult({ "nRemoved" : 2 })
+> db.vote.find().pretty();
+> 
+> db.vote.find({$and:[{name:"w"},{wardn:2}]}).pretty();
+{ "_id" : 6, "wardn" : 2, "name" : "w", "percent" : 84 }
+> db.vote.find({$or:[{name:"w"},{wardn:6}]}).pretty();
+{ "_id" : 6, "wardn" : 2, "name" : "w", "percent" : 84 }
+> db.vote.find({$or:[{name:"w"},{wardn:3}]}).pretty();
+{ "_id" : 1, "wardn" : 3, "name" : "c", "percent" : 64 }
+{ "_id" : 6, "wardn" : 2, "name" : "w", "percent" : 84 }
+
+

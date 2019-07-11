@@ -1,0 +1,151 @@
+mysql> create database StudentClass;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use StudentClass;
+Database changed
+mysql> create table StudentMarks(RollNo int,name varchar(30) NOT NULL,totalmarks int default 0,primary key(RollNo));
+Query OK, 0 rows affected (1.51 sec)
+
+mysql> insert into StudentMarks values (1,'Asawari',991);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into StudentMarks values (2,'Suyog',945);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into StudentMarks values (3,'Mayur',888);
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into StudentMarks values (4,'Mrunal',420);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> create table Result(RollNo int,name varchar(30),Class varchar(50));
+Query OK, 0 rows affected (0.27 sec)
+
+mysql> select * from StudentMarks;
++--------+---------+------------+
+| RollNo | name    | totalmarks |
++--------+---------+------------+
+|      1 | Asawari |        991 |
+|      2 | Suyog   |        945 |
+|      3 | Mayur   |        888 |
+|      4 | Mrunal  |        420 |
++--------+---------+------------+
+4 rows in set (0.00 sec)
+mysql> insert into Result values(1,'Asawari','');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into Result values(3,'Mayur','');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into Result values(4,'Mrunal','');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into Result values(2,'Suyog','');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> delimiter $$
+mysql> create function getClass(tmarks int) returns varchar(40) DETERMINISTIC 
+    -> begin
+    -> declare class varchar(40);
+    -> if (tmarks<=1500 and tmarks>=990) then
+    -> SET class='DISTINCTION';
+    -> elseif (tmarks<=989 and tmarks>=900) then
+    -> SET class='FIRST CLASS';
+    -> elseif (tmarks<=899 and tmarks>=825) then
+    -> SET class='HIGHER SECOND CLASS';
+    -> end if;
+    -> RETURN (class);
+    -> end
+    -> $$
+
+mysql> delimiter ;
+mysql> select name,getclass(totalmarks) from StudentMarks;
++---------+----------------------+
+| name    | getclass(totalmarks) |
++---------+----------------------+
+| Asawari | DISTINCTION          |
+| Suyog   | FIRST CLASS          |
+| Mayur   | HIGHER SECOND CLASS  |
+| Mrunal  | NULL                 |
++---------+----------------------+
+4 rows in set (0.06 sec)
+
+mysql> update StudentMarks set totalmarks=1500 where Rollno=4;
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select name,getclass(totalmarks) from StudentMarks;
++---------+----------------------+
+| name    | getclass(totalmarks) |
++---------+----------------------+
+| Asawari | DISTINCTION          |
+| Suyog   | FIRST CLASS          |
+| Mayur   | HIGHER SECOND CLASS  |
+| Mrunal  | DISTINCTION          |
++---------+----------------------+
+4 rows in set (0.00 sec)
+
+mysql> create procedure GetS(IN prn int,IN pname varchar(30)) begin declare marks int; declare sclass varchar(40); select totalmarks into marks from StudentMarks where RollNo=prn and name=pname; select getclass(marks) into sclass; insert into Result values(prn,pname,sclass); end%
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into StudentMarks values(5,'Neha',1290);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> call GetS(5,'Neha');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> delete from Result;
+Query OK, 6 rows affected (0.04 sec)
+
+mysql> select * from Result;
+Empty set (0.00 sec)
+
+mysql> call GetS(1,'Asawari');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Result;
++--------+---------+-------------+
+| RollNo | name    | Class       |
++--------+---------+-------------+
+|      1 | Asawari | DISTINCTION |
++--------+---------+-------------+
+1 row in set (0.00 sec)
+
+mysql> call GetS(2,'Suyog');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from Result;
++--------+---------+-------------+
+| RollNo | name    | Class       |
++--------+---------+-------------+
+|      1 | Asawari | DISTINCTION |
+|      2 | Suyog   | FIRST CLASS |
++--------+---------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> call GetS(3,'Mayur');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Result;
++--------+---------+---------------------+
+| RollNo | name    | Class               |
++--------+---------+---------------------+
+|      1 | Asawari | DISTINCTION         |
+|      2 | Suyog   | FIRST CLASS         |
+|      3 | Mayur   | HIGHER SECOND CLASS |
++--------+---------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> call GetS(5,'Neha');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from Result;
++--------+---------+---------------------+
+| RollNo | name    | Class               |
++--------+---------+---------------------+
+|      1 | Asawari | DISTINCTION         |
+|      2 | Suyog   | FIRST CLASS         |
+|      3 | Mayur   | HIGHER SECOND CLASS |
+|      5 | Neha    | DISTINCTION         |
++--------+---------+---------------------+
+4 rows in set (0.00 sec)
+

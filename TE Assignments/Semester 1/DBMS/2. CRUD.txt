@@ -1,0 +1,54 @@
+mysql> create database election
+    
+Query OK, 1 row affected (0.05 sec)
+
+mysql> use election;
+Database changed
+mysql> create table vote(wardn int PRIMARY KEY,wardname varchar(20),pr float);
+Query OK, 0 rows affected (0.11 sec)
+
+
+mysql> alter table vote add column(total int);
+Query OK, 0 rows affected (0.24 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table vote add column(act int);
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table vote drop column act;
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> alter table vote modify column pr double;
+Query OK, 0 rows affected (0.13 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> create index ind on vote(wardn);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> create view v1 as select wardn,pr from vote;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop table vote;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> drop view v1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> alter table vote modify wardn int auto_increment;
+Query OK, 0 rows affected (0.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> drop index ind on vote;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+
+
+

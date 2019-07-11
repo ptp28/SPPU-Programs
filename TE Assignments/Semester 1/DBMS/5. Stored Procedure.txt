@@ -1,0 +1,60 @@
+    mysql> create database libray;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use library
+Database changed
+mysql> create table borrower(rollno int,name varchar(20),dateofissue date,nameofbook varchar(20),status varchar(1));
+Query OK, 0 rows affected (0.15 sec)
+
+mysql> create table fine(rollno int,dateofissue date,amount int);
+Query OK, 0 rows affected (0.24 sec)
+mysql> create procedure finecalulation(in prollno int,in pbookname varchar(30))
+ begin 
+declare ndays int;
+ declare fineamount int;
+declare exit handler for not found select 'invalid input'; 
+select datediff(curdate(),dateofissue) into ndays from borrower where rollno=prollno and nameofbook=pbookname;
+ if (ndays>15 and ndays<30) then 
+set fineamount=ndays*5; else set fineamount=ndays*50; end if; update borrower set status='R' where rollno=prollno and nameofbook=pbookname; if(fineamount>0) then insert into fine values(prollno,curdate(),fineamount); end if; end$$
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> delimiter ;
+mysql> call finecalulation(1,'DBMS');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> call finecalulation(2,'DBMS');
+Query OK, 1 row affected (0.16 sec)
+
+mysql> call finecalulation(3,'TOC');
++---------------+
+| invalid input |
++---------------+
+| invalid input |
++---------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from borrower;
++--------+------+-------------+------------+--------+
+| rollno | name | dateofissue | nameofbook | status |
++--------+------+-------------+------------+--------+
+|      1 | x    | 2018-06-30  | DBMS       | R      |
+|      2 | y    | 2018-06-15  | DBMS       | I      |
++--------+------+-------------+------------+--------+
+2 rows in set (0.00 sec)
+
+
+mysql> select * from fine;
++--------+------------+--------+
+| rollno | ddate      | amount |
++--------+------------+--------+
+|      1 | 2018-07-19 |     95 |
+|      2 | 2018-07-19 |   1700 |
++--------+------------+--------+
+2 rows in set (0.00 sec)
+
+
+
+
+

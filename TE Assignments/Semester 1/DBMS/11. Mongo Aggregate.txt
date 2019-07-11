@@ -1,0 +1,64 @@
+> db.vote.aggregate([{$group:{_id:"$name",num:{$sum:1}}}])
+{ "_id" : null, "num" : 1 }
+{ "_id" : "c", "num" : 1 }
+{ "_id" : "w", "num" : 1 }
+{ "_id" : "g", "num" : 4 }
+{ "_id" : "ge", "num" : 5 }
+> db.vote.aggregate([{$group:{_id:"$name",num:{$min:1}}}])
+{ "_id" : null, "num" : 1 }
+{ "_id" : "c", "num" : 1 }
+{ "_id" : "w", "num" : 1 }
+{ "_id" : "g", "num" : 1 }
+{ "_id" : "ge", "num" : 1 }
+> db.vote.aggregate([{$group:{_id:"$name",num:{$min:2}}}])
+{ "_id" : null, "num" : 2 }
+{ "_id" : "c", "num" : 2 }
+{ "_id" : "w", "num" : 2 }
+{ "_id" : "g", "num" : 2 }
+{ "_id" : "ge", "num" : 2 }
+> db.vote.aggregate([{$group:{_id:"$name",num:{$max:2}}}])
+{ "_id" : null, "num" : 2 }
+{ "_id" : "c", "num" : 2 }
+{ "_id" : "w", "num" : 2 }
+{ "_id" : "g", "num" : 2 }
+{ "_id" : "ge", "num" : 2 }
+> db.vote.aggregate([{$group:{_id:"$name",num:{$max:1}}}])
+{ "_id" : null, "num" : 1 }
+{ "_id" : "c", "num" : 1 }
+{ "_id" : "w", "num" : 1 }
+{ "_id" : "g", "num" : 1 }
+{ "_id" : "ge", "num" : 1 }
+> db.vote.aggregate([{$group:{_id:"$name",num:{$push:"$percent"}}}])
+{ "_id" : null, "num" : [ 55 ] }
+{ "_id" : "c", "num" : [ 64 ] }
+{ "_id" : "w", "num" : [ 84 ] }
+{ "_id" : "g", "num" : [ 54, 54, 54, 55 ] }
+{ "_id" : "ge", "num" : [ 55, 55, 55, 55 ] }
+> db.vote.aggregate([{$group:{_id:"$name",num:{$addToSet:"$percent"}}}])
+{ "_id" : null, "num" : [ 55 ] }
+{ "_id" : "c", "num" : [ 64 ] }
+{ "_id" : "w", "num" : [ 84 ] }
+{ "_id" : "g", "num" : [ 55, 54 ] }
+{ "_id" : "ge", "num" : [ 55 ] }
+> db.vote.aggregate([{$group:{_id:"$name",num:{$first:"$percent"}}}])
+{ "_id" : null, "num" : 55 }
+{ "_id" : "c", "num" : 64 }
+{ "_id" : "w", "num" : 84 }
+{ "_id" : "g", "num" : 54 }
+{ "_id" : "ge", "num" : 55 }
+> db.vote.aggregate([{$group:{_id:"$name",num:{$last:"$percent"}}}])
+{ "_id" : null, "num" : 55 }
+{ "_id" : "c", "num" : 64 }
+{ "_id" : "w", "num" : 84 }
+{ "_id" : "g", "num" : 55 }
+{ "_id" : "ge", "num" : 55 }
+
+
+> db.vote.ensureIndex({wardn:1})
+{
+	"createdCollectionAutomatically" : false,
+	"numIndexesBefore" : 1,
+	"numIndexesAfter" : 2,
+	"ok" : 1
+}
+

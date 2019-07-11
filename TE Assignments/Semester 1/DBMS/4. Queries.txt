@@ -1,0 +1,200 @@
+mysql> create database Employee;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use Employee;
+Database changed
+
+mysql> insert into Employees values ("Nitin","Bibwewadi","Pune");
+Query OK, 1 row affected (0.05 sec)
+mysql> insert into Employees values("Sneha","Kondhawa","Pune");
+Query OK, 1 row affected (0.05 sec)
+mysql> insert into Employees values ("Neha","Koregaon","Mumbai");
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Employees values("Rita","Katraj","Nashik");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from Employees;
++---------------+-----------+--------+
+| employee_name | street    | city   |
++---------------+-----------+--------+
+| Neha          | Koregaon  | Mumbai |
+| Nitin         | Bibwewadi | Pune   |
+| Rita          | Katraj    | Nashik |
+| Sneha         | Kondhawa  | Pune   |
++---------------+-----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> create table Company(company_name varchar(20),cmp_city varchar(10),primary key(company_name));
+Query OK, 0 rows affected (0.27 sec)
+mysql> insert into Company values("SBI","Pune");
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Company values("AXIS","Pune");
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Company values("ICICI","Mumbai");
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into Company values("SVC","Nagpar");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from Company;
++--------------+----------+
+| company_name | cmp_city |
++--------------+----------+
+| AXIS         | Pune     |
+| ICICI        | Mumbai   |
+| SBI          | Pune     |
+| SVC          | Nagpar   |
++--------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> create table works(employee_name varchar(20) NOT NULL,company_name varchar(20),salary int,foreign key(employee_name) references Employees(employee_name),foreign key(company_name) references Company(company_name));
+Query OK, 0 rows affected (0.35 sec)
+mysql> insert into works values("Neha","SBI",50000);
+Query OK, 1 row affected (0.05 sec)
+mysql> insert into works values("Rita","AXIS",10000);
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into works values("Nitin","SBI",200000);
+Query OK, 1 row affected (0.03 sec)
+mysql> insert into works values("Sneha","SVC",80000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from works;
++---------------+--------------+--------+
+| employee_name | company_name | salary |
++---------------+--------------+--------+
+| Neha          | SBI          |  50000 |
+| Rita          | AXIS         |  10000 |
+| Nitin         | SBI          | 200000 |
+| Sneha         | SVC          |  80000 |
++---------------+--------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> create table manages (employee_name varchar(20) NOT NULL,manager_name varchar(25),primary key(manager_name),foreign key(employee_name) references Employees(employee_name));
+Query OK, 0 rows affected (0.45 sec)
+mysql> insert into manages values("Neha","Manas");
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into manages values("Nitin","Sheetal");
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into manages values("Rita","Sameer");
+Query OK, 1 row affected (0.04 sec)
+mysql> insert into manages values("sneha","Kiran");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from manages;
++---------------+--------------+
+| employee_name | manager_name |
++---------------+--------------+
+| Neha          | Manas        |
+| Nitin         | Sheetal      |
+| Rita          | Sameer       |
+| sneha         | Kiran        |
++---------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> select employee_name from works where company_name='SBI';
++---------------+
+| employee_name |
++---------------+
+| Neha          |
+| Nitin         |
++---------------+
+2 rows in set (0.02 sec)
+
+mysql> select employee_name from works where salary>(select avg(salary) from works);
++---------------+
+| employee_name |
++---------------+
+| Nitin         |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select employee_name from works where salary>(select avg(salary) from works where company_name='SBI');
++---------------+
+| employee_name |
++---------------+
+| Nitin         |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(salary) from works where company_name='SBI';
++-------------+
+| avg(salary) |
++-------------+
+| 125000.0000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select company_name from works group by company_name having count(employee_name)>1;
++--------------+
+| company_name |
++--------------+
+| SBI          |
++--------------+
+1 row in set (0.01 sec)
+
+mysql> select company_name from works where salary>(select avg(salary) from works where company_name='SBI');
++--------------+
+| company_name |
++--------------+
+| SBI          |
+| SVC          |
++--------------+
+2 rows in set (0.02 sec)
+
+mysql> select company_name from works where salary<=(select min(salary) from works);
++--------------+
+| company_name |
++--------------+
+| AXIS         |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select Employees.employee_name,street,city from Employees,works where company_name='SBI' and Employees.employee_name=works.employee_name;
++---------------+-----------+--------+
+| employee_name | street    | city   |
++---------------+-----------+--------+
+| Neha          | Koregaon  | Mumbai |
+| Nitin         | Bibwewadi | Pune   |
++---------------+-----------+--------+
+2 rows in set (0.01 sec)
+
+mysql> select Employees.employee_name,street,city from Employees,works where company_name='SBI' and salary>50000 and Employees.employee_name=works.employee_
++---------------+-----------+------+
+| employee_name | street    | city |
++---------------+-----------+------+
+| Nitin         | Bibwewadi | Pune |
++---------------+-----------+------+
+1 row in set (0.00 sec)
+
+
+select * from Company left outer join works on Company.company_name=works.company_name;
++--------------+----------+---------------+--------------+--------+
+| company_name | cmp_city | employee_name | company_name | salary |
++--------------+----------+---------------+--------------+--------+
+| SBI          | Pune     | Neha          | SBI          |  50000 |
+| AXIS         | Pune     | Rita          | AXIS         |  10000 |
+| SBI          | Pune     | Nitin         | SBI          | 200000 |
+| SVC          | Nagpar   | Sneha         | SVC          |  80000 |
+| ICICI        | Mumbai   | NULL          | NULL         |   NULL |
++--------------+----------+---------------+--------------+--------+
+5 rows in set (0.00 sec)
+
+ select * from works right outer join Company on works.company_name=Company.company_name;
++---------------+--------------+--------+--------------+----------+
+| employee_name | company_name | salary | company_name | cmp_city |
++---------------+--------------+--------+--------------+----------+
+| Neha          | SBI          |  50000 | SBI          | Pune     |
+| Rita          | AXIS         |  10000 | AXIS         | Pune     |
+| Nitin         | SBI          | 200000 | SBI          | Pune     |
+| Sneha         | SVC          |  80000 | SVC          | Nagpar   |
+| NULL          | NULL         |   NULL | ICICI        | Mumbai   |
++---------------+--------------+--------+--------------+----------+
+5 rows in set (0.00 sec)
+
+
+create view company_name_view as select company_name from Company;
+Query OK, 0 rows affected (0.48 sec)
+
+mysql> drop view company_name_view;
+Query OK, 0 rows affected (0.00 sec)
+
+

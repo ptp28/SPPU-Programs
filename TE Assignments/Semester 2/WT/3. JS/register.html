@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="cs.css">
+	<title>Register</title>
+	<script type="text/javascript">
+			function ck(){
+        return ckName() && ckPass() && valMob() && ckMail();
+    	}
+    		function ckPass(){
+                var id1= document.getElementById('password').value;
+                var regex= /^[A-Za-z0-9]+$/;
+                var isvalid= regex.test(id1);
+                var errt= document.getElementById('q4');
+                errt.innerHTML= isvalid ? "" : "Invalid Password";
+                errt.style.color= isvalid ? 'green' : 'red';
+                 return isvalid;
+            }
+            function ckName()
+            {
+                var name= document.getElementById('name').value;
+                var regex= /^[A-Z][a-z]*$/;
+                var isvalid= regex.test(name);
+                var errt= document.getElementById('q1');
+                errt.innerHTML= isvalid ? "" : "Invalid Name";
+                errt.style.color= isvalid ? 'green' : 'red';
+                 return isvalid;
+            }
+            function ckMail()
+            {
+                var name= document.getElementById('email').value;
+                var regex= /^[a-z]+[a-z0-9]*[@][a-z]+[.][a-z]+$/;
+                var isvalid= regex.test(name);
+                var errt= document.getElementById('q2');
+                errt.innerHTML= isvalid ? "" : "Invalid Mail";
+                errt.style.color= isvalid ? 'green' : 'red';
+                 return isvalid;
+            }
+            function valMob(){
+                var regex= /^\d{3}\s?\d{3}\s?\d{4}$/;
+                var data= document.getElementById('num').value;
+                var isvalid= regex.test(data);
+                var span= document.getElementById('q3');
+                span.innerHTML= isvalid ? 'valid number' : 'Invalid Number';
+                span.style.color= isvalid ? 'green' : 'red';
+            }
+	</script>
+</head>
+<body id="d">
+		<div class="reg">
+			<form>
+				<h1>Student Registration</h1>
+				Enter Name:<br><input type="text" id="name" placeholder=" First  Middle  Surname" oninput="ckName()"> <span id='q1'></span><br><br>
+				Enter Address:<br><input type="text" name="Address" placeholder="Complete Address"><br><br>
+				Enter EMail:<br><input type="email" id="email" placeholder="e.g abc@xyz.com" oninput="ckMail()"> <span id='q2'></span><br><br>
+				Enter Password:<br><input type="password" id="password" placeholder="e.g ABCdef123#" oninput="ckPass()"> <span id='q4'></span><br><br>
+				Enter Mobile No.:<br><input type="tel" id="num" placeholder="e.g 8255447788" oninput="valMob()"> <span id='q3'></span><br><br>
+				Gender:<br><input type="radio" name="Gender" checked>:Male<input type="radio" name="Gender">:Female:<input type="radio" name="Gender">:Other<br><br>
+				Blood Group:<br><select>
+					<option>o+</option>
+					<option>o-</option>
+					<option>A+</option>
+					<option>A-</option>
+					<option>B+</option>
+					<option>B-</option>
+					<option>AB+</option>
+					<OPTION>AB-</OPTION>
+				</select><br><br>
+				DOB:<br><input type="date" name="dob"><br><br>
+				<input type="submit" name="submit" value="submit" class="button1" onsubmit="ck()">
+				<input type="reset" name="reset" class="button">
+			</form>
+		</div>
+</body>
+</html>

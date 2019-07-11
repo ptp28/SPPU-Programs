@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/heading"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#363636"/>
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/location"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="15dp"
+        android:layout_marginEnd="5dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/buttonshape"
+        android:hint="Enter Location "
+        android:textColorHint="#cccccc"/>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:onClick="search1"
+        android:padding="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginEnd="5dp"
+        android:textColor="#474747"
+        android:textStyle="bold"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:background="@drawable/buttonshape1"
+        android:layout_marginTop="10dp"
+        android:text="S E A R C H"/>
+</LinearLayout>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        tools:context=".MapsActivity" />
+
+    <TextView
+        android:id="@+id/heading1"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#363636"/>
+
+
+</LinearLayout>

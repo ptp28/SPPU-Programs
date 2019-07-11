@@ -1,0 +1,90 @@
+package com.mkyong;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class JsonSimpleWriteExample {
+
+    public static void main(String[] args) {
+
+        JSONObject obj = new JSONObject();
+        obj.put("name", "mkyong.com");
+        obj.put("age", new Integer(100));
+
+        JSONArray list = new JSONArray();
+        list.add("msg 1");
+        list.add("msg 2");
+        list.add("msg 3");
+
+        obj.put("messages", list);
+
+        try (FileWriter file = new FileWriter("f:\\test.json")) {
+
+            file.write(obj.toJSONString());
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.print(obj);
+
+    }
+
+}
+
+//OUTPUT:
+{
+	"age":100,
+	"name":"mkyong.com",
+	"messages":["msg 1","msg 2","msg 3"]
+}
+
+
+//Array
+
+package com.candidjava;
+ 
+import org.json.JSONArray;
+import org.json.JSONException;
+ 
+public class JArray {
+    public static void main(String args[]) throws JSONException {
+        JSONArray arrayObj = new JSONArray();
+        arrayObj.put("name :");
+        arrayObj.put("Deepa");
+        arrayObj.put("Reg No");
+        arrayObj.put(123);
+        arrayObj.put("Mark");
+        arrayObj.put(new Double(90));
+        arrayObj.put("City");
+        arrayObj.put("Chennai");
+ 
+        System.out.println(arrayObj);
+ 
+        int length = arrayObj.length();
+        String opt = arrayObj.optString(2);
+        boolean data = arrayObj.isNull(3);
+        String getMark = arrayObj.getString(5);
+        Object ob = arrayObj.get(7);
+ 
+        System.out.println("Length: " + length);
+        System.out.println("2nd Position: " + opt);
+        System.out.println("isNull: " + data);
+        System.out.println("Mark:" + getMark);
+        System.out.println("City: " + ob);
+ 
+    }
+}
+
+//OUTPUT:
+
+[“name :”,”Deepa”,”Reg No”,123,”Mark”,90,”City”,”Chennai”]
+Length: 8
+2nd Position: Reg No
+isNull: false
+Mark:90.0
+City: Chennai

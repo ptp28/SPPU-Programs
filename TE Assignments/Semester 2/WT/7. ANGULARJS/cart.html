@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <title>Insert title here</title>
+        <script src="angular.min.js"></script>
+    </head>
+    <body>
+        <h1>
+            AngularJS Shopping Cart Application
+        </h1>
+        <h2>Happy Shopping...! :-)</h2>
+
+        <div ng-app="myapp" ng-controller="CartForm">
+            <table class="table">
+            <tr>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Cost</th>
+                <th>Total Cost</th>
+                <th></th>
+            </tr>
+            <tr ng:repeat="item in cart.items">
+                <td><input type="text" ng:model="item.description"></td>
+                <td><input type="number" ng:model="item.qty" ng:required></td>
+                <td><input type="number" ng:model="item.cost" ng:required></td>
+                <td>{{item.qty * item.cost | currency:'Rs '}}</td>
+                <td>[<a href ng:click="removeItem($index)"> Remove</a>]</td>
+            </tr>
+            <tr>
+                <td><a href ng:click="addItem()">Add item</a></td>
+                <td></td>
+                <td>Total:</td>
+                <td>{{total() | currency:'Rs '}}</td>
+            </tr>
+            </table>
+        </div>
+    </body>
+    <script src="model.js" type="text/javascript">
+    </script>
+    <script src="controller.js" type="text/javascript">
+    </script>
+</html>

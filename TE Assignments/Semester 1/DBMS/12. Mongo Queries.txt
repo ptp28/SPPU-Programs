@@ -1,0 +1,173 @@
+manasi@manasi-Inspiron-15-3567:~$ mongo
+MongoDB shell version: 3.2.20
+connecting to: test
+Server has startup warnings: 
+2018-10-09T10:04:19.742+0530 I CONTROL  [initandlisten] 
+2018-10-09T10:04:19.742+0530 I CONTROL  [initandlisten] ** WARNING: /sys/kernel/mm/transparent_hugepage/enabled is 'always'.
+2018-10-09T10:04:19.742+0530 I CONTROL  [initandlisten] **        We suggest setting it to 'never'
+2018-10-09T10:04:19.742+0530 I CONTROL  [initandlisten] 
+> db
+test
+
+> show dbs
+local   0.000GB
+manasi  0.000GB
+
+> use manasi
+switched to db manasi
+
+> show collections
+Student
+
+> db.Student.find()
+{ "_id" : 1, "roll_no" : 1, "name" : "manasi", "class" : "TE_Comp", "marks" : 80.81 }
+{ "_id" : 2, "roll_no" : 2, "name" : "tanjila", "class" : "TE_Comp", "marks" : 80.71 }
+{ "_id" : 3, "roll_no" : 3, "name" : "shubhnagi", "class" : "TE_Comp", "marks" : 78.71 }
+{ "_id" : 4, "roll_no" : 4, "name" : "neha", "class" : "TE_Comp", "marks" : 92.71 }
+{ "_id" : 5, "roll_no" : 5, "name" : "nachiket", "class" : "TE_IT", "marks" : 92.71, "subject" : "DBMS" }
+{ "_id" : 6, "roll_no" : 6, "name" : "atharva", "class" : "TE_IT", "marks" : 90, "subject" : "DBMS" }
+{ "_id" : 7, "roll_no" : 7, "name" : "amey", "class" : "TE_IT", "marks" : 72.71, "subject" : "DBMS" }
+{ "_id" : 8, "roll_no" : 8, "name" : "rutuja", "class" : "TE_Comp", "marks" : 90.71, "subject" : "DBMS" }
+{ "_id" : 9, "roll_no" : 9, "name" : "Jaie", "class" : "Electrical", "marks" : 80.88, "subject" : "Power Electronics" }
+{ "_id" : 10, "roll_no" : 10, "name" : "mrun", "marks" : 90 }
+
+> db.Student.find().pretty()
+{
+	"_id" : 1,
+	"roll_no" : 1,
+	"name" : "manasi",
+	"class" : "TE_Comp",
+	"marks" : 80.81
+}
+{
+	"_id" : 2,
+	"roll_no" : 2,
+	"name" : "tanjila",
+	"class" : "TE_Comp",
+	"marks" : 80.71
+}
+{
+	"_id" : 3,
+	"roll_no" : 3,
+	"name" : "shubhnagi",
+	"class" : "TE_Comp",
+	"marks" : 78.71
+}
+{
+	"_id" : 4,
+	"roll_no" : 4,
+	"name" : "neha",
+	"class" : "TE_Comp",
+	"marks" : 92.71
+}
+{
+	"_id" : 5,
+	"roll_no" : 5,
+	"name" : "nachiket",
+	"class" : "TE_IT",
+	"marks" : 92.71,
+	"subject" : "DBMS"
+}
+{
+	"_id" : 6,
+	"roll_no" : 6,
+	"name" : "atharva",
+	"class" : "TE_IT",
+	"marks" : 90,
+	"subject" : "DBMS"
+}
+{
+	"_id" : 7,
+	"roll_no" : 7,
+	"name" : "amey",
+	"class" : "TE_IT",
+	"marks" : 72.71,
+	"subject" : "DBMS"
+}
+{
+	"_id" : 8,
+	"roll_no" : 8,
+	"name" : "rutuja",
+	"class" : "TE_Comp",
+	"marks" : 90.71,
+	"subject" : "DBMS"
+}
+{
+	"_id" : 9,
+	"roll_no" : 9,
+	"name" : "Jaie",
+	"class" : "Electrical",
+	"marks" : 80.88,
+	"subject" : "Power Electronics"
+}
+{ 
+	"_id" : 10,
+	"roll_no" : 10,
+	"name" : "mrun",
+	"marks" : 90
+}
+
+> db.Student.aggregate([{$match:{class:'TE_Comp'}}])
+{ "_id" : 1, "roll_no" : 1, "name" : "manasi", "class" : "TE_Comp", "marks" : 80.81 }
+{ "_id" : 2, "roll_no" : 2, "name" : "tanjila", "class" : "TE_Comp", "marks" : 80.71 }
+{ "_id" : 3, "roll_no" : 3, "name" : "shubhnagi", "class" : "TE_Comp", "marks" : 78.71 }
+{ "_id" : 4, "roll_no" : 4, "name" : "neha", "class" : "TE_Comp", "marks" : 92.71 }
+{ "_id" : 8, "roll_no" : 8, "name" : "rutuja", "class" : "TE_Comp", "marks" : 90.71, "subject" : "DBMS" }
+ 
+> db.Student.aggregate([{$project:{roll_no:1,name:1}}])
+{ "_id" : 1, "roll_no" : 1, "name" : "manasi" }
+{ "_id" : 2, "roll_no" : 2, "name" : "tanjila" }
+{ "_id" : 3, "roll_no" : 3, "name" : "shubhnagi" }
+{ "_id" : 4, "roll_no" : 4, "name" : "neha" }
+{ "_id" : 5, "roll_no" : 5, "name" : "nachiket" }
+{ "_id" : 6, "roll_no" : 6, "name" : "atharva" }
+{ "_id" : 7, "roll_no" : 7, "name" : "amey" }
+{ "_id" : 8, "roll_no" : 8, "name" : "rutuja" }
+{ "_id" : 9, "roll_no" : 9, "name" : "Jaie" }
+{ "_id" : 10, "roll_no" : 10, "name" : "mrun" }
+
+> db.Student.aggregate([{$group:{_id:"$class",total:{$sum:"$marks"}}}])
+{ "_id" : null, "total" : 90 }
+{ "_id" : "Electrical", "total" : 80.88 }
+{ "_id" : "TE_IT", "total" : 255.41999999999996 }
+{ "_id" : "TE_Comp", "total" : 423.6499999999999 }
+
+> db.Student.aggregate([{$group:{_id:"$class",average:{$avg:"$marks"}}}])
+{ "_id" : null, "average" : 90 }
+{ "_id" : "Electrical", "average" : 80.88 }
+{ "_id" : "TE_IT", "average" : 85.13999999999999 }
+{ "_id" : "TE_Comp", "average" : 84.72999999999999 }
+
+> db.Student.aggregate([{$sort:{marks:-1}}])
+{ "_id" : 4, "roll_no" : 4, "name" : "neha", "class" : "TE_Comp", "marks" : 92.71 }
+{ "_id" : 5, "roll_no" : 5, "name" : "nachiket", "class" : "TE_IT", "marks" : 92.71, "subject" : "DBMS" }
+{ "_id" : 8, "roll_no" : 8, "name" : "rutuja", "class" : "TE_Comp", "marks" : 90.71, "subject" : "DBMS" }
+{ "_id" : 6, "roll_no" : 6, "name" : "atharva", "class" : "TE_IT", "marks" : 90, "subject" : "DBMS" }
+{ "_id" : 10, "roll_no" : 10, "name" : "mrun", "marks" : 90 }
+{ "_id" : 9, "roll_no" : 9, "name" : "Jaie", "class" : "Electrical", "marks" : 80.88, "subject" : "Power Electronics" }
+{ "_id" : 1, "roll_no" : 1, "name" : "manasi", "class" : "TE_Comp", "marks" : 80.81 }
+{ "_id" : 2, "roll_no" : 2, "name" : "tanjila", "class" : "TE_Comp", "marks" : 80.71 }
+{ "_id" : 3, "roll_no" : 3, "name" : "shubhnagi", "class" : "TE_Comp", "marks" : 78.71 }
+{ "_id" : 7, "roll_no" : 7, "name" : "amey", "class" : "TE_IT", "marks" : 72.71, "subject" : "DBMS" }
+
+> db.Student.aggregate([{$skip:5}])
+{ "_id" : 6, "roll_no" : 6, "name" : "atharva", "class" : "TE_IT", "marks" : 90, "subject" : "DBMS" }
+{ "_id" : 7, "roll_no" : 7, "name" : "amey", "class" : "TE_IT", "marks" : 72.71, "subject" : "DBMS" }
+{ "_id" : 8, "roll_no" : 8, "name" : "rutuja", "class" : "TE_Comp", "marks" : 90.71, "subject" : "DBMS" }
+{ "_id" : 9, "roll_no" : 9, "name" : "Jaie", "class" : "Electrical", "marks" : 80.88, "subject" : "Power Electronics" }
+{ "_id" : 10, "roll_no" : 10, "name" : "mrun", "marks" : 90 }
+
+> db.Student.aggregate([{$limit:5}])
+{ "_id" : 1, "roll_no" : 1, "name" : "manasi", "class" : "TE_Comp", "marks" : 80.81 }
+{ "_id" : 2, "roll_no" : 2, "name" : "tanjila", "class" : "TE_Comp", "marks" : 80.71 }
+{ "_id" : 3, "roll_no" : 3, "name" : "shubhnagi", "class" : "TE_Comp", "marks" : 78.71 }
+{ "_id" : 4, "roll_no" : 4, "name" : "neha", "class" : "TE_Comp", "marks" : 92.71 }
+{ "_id" : 5, "roll_no" : 5, "name" : "nachiket", "class" : "TE_IT", "marks" : 92.71, "subject" : "DBMS" }
+
+> db.Student.aggregate([{$unwind:"$subject"}])
+{ "_id" : 5, "roll_no" : 5, "name" : "nachiket", "class" : "TE_IT", "marks" : 92.71, "subject" : "DBMS" }
+{ "_id" : 6, "roll_no" : 6, "name" : "atharva", "class" : "TE_IT", "marks" : 90, "subject" : "DBMS" }
+{ "_id" : 7, "roll_no" : 7, "name" : "amey", "class" : "TE_IT", "marks" : 72.71, "subject" : "DBMS" }
+{ "_id" : 8, "roll_no" : 8, "name" : "rutuja", "class" : "TE_Comp", "marks" : 90.71, "subject" : "DBMS" }
+{ "_id" : 9, "roll_no" : 9, "name" : "Jaie", "class" : "Electrical", "marks" : 80.88, "subject" : "Power Electronics" }
+

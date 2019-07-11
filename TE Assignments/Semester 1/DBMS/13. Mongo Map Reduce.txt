@@ -1,0 +1,163 @@
+
+> use pvg
+switched to db pvg
+> show collections
+avgmarks
+employee
+prajakta
+student
+> db.student.find()
+{ "_id" : ObjectId("5b864f6f3e845381d2f6ee9c"), "rollno" : 1, "name" : "abc", "marks" : 90 }
+{ "_id" : ObjectId("5b864f7e3e845381d2f6ee9d"), "rollno" : 2, "name" : "xyz", "marks" : 80 }
+{ "_id" : ObjectId("5b864f8d3e845381d2f6ee9e"), "rollno" : 3, "name" : "a", "marks" : 67 }
+{ "_id" : ObjectId("5b864fa23e845381d2f6ee9f"), "rollno" : 4, "name" : "b", "marks" : 23 }
+{ "_id" : ObjectId("5b86524b3e845381d2f6eea0"), "rollno" : 4, "name" : "b", "marks" : 23, "class" : "Comp" }
+{ "_id" : ObjectId("5b86525c3e845381d2f6eea1"), "rollno" : 3, "name" : "a", "marks" : 67, "class" : "Comp" }
+{ "_id" : ObjectId("5b86526e3e845381d2f6eea2"), "rollno" : 2, "name" : "xyz", "marks" : 80, "class" : "IT" }
+{ "_id" : ObjectId("5b86527e3e845381d2f6eea3"), "rollno" : 1, "name" : "abc", "marks" : 90, "class" : "IT" }
+> db.student.insert({rollno:2,name:'a',marks:90,class:'comp',subject:'dbms'})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({rollno:3,name:'b',marks:100,class:'comp',subject:'dbms'})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({rollno:3,name:'b',marks:80,class:'comp',subject:'dbms'})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({rollno:3,name:'b',marks:80,class:'IT',subject:'dbms'})
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({rollno:3,name:'b',marks:100,class:'IT',subject:'dbms'})
+WriteResult({ "nInserted" : 1 })
+> var mapf=function(){emit(this.class,this.marks)}
+> var reducef=function(pclass,pmarks){return Array.avg(pmarks)}
+> db.student.mapReduce(mapf,reducef,{query:{subject:'dbms'},out:'result'})
+{
+	"result" : "result",
+	"timeMillis" : 838,
+	"counts" : {
+		"input" : 5,
+		"emit" : 5,
+		"reduce" : 2,
+		"output" : 2
+	},
+	"ok" : 1
+}
+> db.result.find()
+{ "_id" : "IT", "value" : 90 }
+{ "_id" : "comp", "value" : 90 }
+> db.student.find()
+{ "_id" : ObjectId("5b864f6f3e845381d2f6ee9c"), "rollno" : 1, "name" : "abc", "marks" : 90 }
+{ "_id" : ObjectId("5b864f7e3e845381d2f6ee9d"), "rollno" : 2, "name" : "xyz", "marks" : 80 }
+{ "_id" : ObjectId("5b864f8d3e845381d2f6ee9e"), "rollno" : 3, "name" : "a", "marks" : 67 }
+{ "_id" : ObjectId("5b864fa23e845381d2f6ee9f"), "rollno" : 4, "name" : "b", "marks" : 23 }
+{ "_id" : ObjectId("5b86524b3e845381d2f6eea0"), "rollno" : 4, "name" : "b", "marks" : 23, "class" : "Comp" }
+{ "_id" : ObjectId("5b86525c3e845381d2f6eea1"), "rollno" : 3, "name" : "a", "marks" : 67, "class" : "Comp" }
+{ "_id" : ObjectId("5b86526e3e845381d2f6eea2"), "rollno" : 2, "name" : "xyz", "marks" : 80, "class" : "IT" }
+{ "_id" : ObjectId("5b86527e3e845381d2f6eea3"), "rollno" : 1, "name" : "abc", "marks" : 90, "class" : "IT" }
+{ "_id" : ObjectId("5b8e374e7c2c2a640b386547"), "rollno" : 2, "name" : "a", "marks" : 90, "class" : "comp", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e375e7c2c2a640b386548"), "rollno" : 3, "name" : "b", "marks" : 100, "class" : "comp", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e376a7c2c2a640b386549"), "rollno" : 3, "name" : "b", "marks" : 80, "class" : "comp", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e37767c2c2a640b38654a"), "rollno" : 3, "name" : "b", "marks" : 80, "class" : "IT", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e377e7c2c2a640b38654b"), "rollno" : 3, "name" : "b", "marks" : 100, "class" : "IT", "subject" : "dbms" }
+> show collections
+avgmarks
+employee
+prajakta
+result
+student
+> db.student.find()
+{ "_id" : ObjectId("5b864f6f3e845381d2f6ee9c"), "rollno" : 1, "name" : "abc", "marks" : 90 }
+{ "_id" : ObjectId("5b864f7e3e845381d2f6ee9d"), "rollno" : 2, "name" : "xyz", "marks" : 80 }
+{ "_id" : ObjectId("5b864f8d3e845381d2f6ee9e"), "rollno" : 3, "name" : "a", "marks" : 67 }
+{ "_id" : ObjectId("5b864fa23e845381d2f6ee9f"), "rollno" : 4, "name" : "b", "marks" : 23 }
+{ "_id" : ObjectId("5b86524b3e845381d2f6eea0"), "rollno" : 4, "name" : "b", "marks" : 23, "class" : "Comp" }
+{ "_id" : ObjectId("5b86525c3e845381d2f6eea1"), "rollno" : 3, "name" : "a", "marks" : 67, "class" : "Comp" }
+{ "_id" : ObjectId("5b86526e3e845381d2f6eea2"), "rollno" : 2, "name" : "xyz", "marks" : 80, "class" : "IT" }
+{ "_id" : ObjectId("5b86527e3e845381d2f6eea3"), "rollno" : 1, "name" : "abc", "marks" : 90, "class" : "IT" }
+{ "_id" : ObjectId("5b8e374e7c2c2a640b386547"), "rollno" : 2, "name" : "a", "marks" : 90, "class" : "comp", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e375e7c2c2a640b386548"), "rollno" : 3, "name" : "b", "marks" : 100, "class" : "comp", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e376a7c2c2a640b386549"), "rollno" : 3, "name" : "b", "marks" : 80, "class" : "comp", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e37767c2c2a640b38654a"), "rollno" : 3, "name" : "b", "marks" : 80, "class" : "IT", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e377e7c2c2a640b38654b"), "rollno" : 3, "name" : "b", "marks" : 100, "class" : "IT", "subject" : "dbms" }
+> var mapf=function(){emit(this.class,this.marks)}
+> var reducef=function(pclass,pmarks)({return Array.avg(pmarks)}
+... 
+... 
+> 
+> var reducef=function(pclass,pmarks){return Array.avg(pmarks)}
+> db.student.mapReduce(mapf,reducef,{out:'result'})
+{
+	"result" : "result",
+	"timeMillis" : 382,
+	"counts" : {
+		"input" : 13,
+		"emit" : 13,
+		"reduce" : 4,
+		"output" : 4
+	},
+	"ok" : 1
+}
+> db.result.find()
+{ "_id" : null, "value" : 65 }
+{ "_id" : "Comp", "value" : 45 }
+{ "_id" : "IT", "value" : 87.5 }
+{ "_id" : "comp", "value" : 90 }
+> db.student.mapReduce(mapf,reducef,{query:{subject:'dbms'},out:'result'})
+{
+	"result" : "result",
+	"timeMillis" : 372,
+	"counts" : {
+		"input" : 5,
+		"emit" : 5,
+		"reduce" : 2,
+		"output" : 2
+	},
+	"ok" : 1
+}
+> db.student.find()
+{ "_id" : ObjectId("5b864f6f3e845381d2f6ee9c"), "rollno" : 1, "name" : "abc", "marks" : 90 }
+{ "_id" : ObjectId("5b864f7e3e845381d2f6ee9d"), "rollno" : 2, "name" : "xyz", "marks" : 80 }
+{ "_id" : ObjectId("5b864f8d3e845381d2f6ee9e"), "rollno" : 3, "name" : "a", "marks" : 67 }
+{ "_id" : ObjectId("5b864fa23e845381d2f6ee9f"), "rollno" : 4, "name" : "b", "marks" : 23 }
+{ "_id" : ObjectId("5b86524b3e845381d2f6eea0"), "rollno" : 4, "name" : "b", "marks" : 23, "class" : "Comp" }
+{ "_id" : ObjectId("5b86525c3e845381d2f6eea1"), "rollno" : 3, "name" : "a", "marks" : 67, "class" : "Comp" }
+{ "_id" : ObjectId("5b86526e3e845381d2f6eea2"), "rollno" : 2, "name" : "xyz", "marks" : 80, "class" : "IT" }
+{ "_id" : ObjectId("5b86527e3e845381d2f6eea3"), "rollno" : 1, "name" : "abc", "marks" : 90, "class" : "IT" }
+{ "_id" : ObjectId("5b8e374e7c2c2a640b386547"), "rollno" : 2, "name" : "a", "marks" : 90, "class" : "comp", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e375e7c2c2a640b386548"), "rollno" : 3, "name" : "b", "marks" : 100, "class" : "comp", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e376a7c2c2a640b386549"), "rollno" : 3, "name" : "b", "marks" : 80, "class" : "comp", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e37767c2c2a640b38654a"), "rollno" : 3, "name" : "b", "marks" : 80, "class" : "IT", "subject" : "dbms" }
+{ "_id" : ObjectId("5b8e377e7c2c2a640b38654b"), "rollno" : 3, "name" : "b", "marks" : 100, "class" : "IT", "subject" : "dbms" }
+> var mapfunction=function(){emit(this.class,this.marks)}
+> var reducefunction=function(pclass,pmarks){return Array.avg(pmarks)}
+> db.student.mapReduce(mapfunction,reducefunction,{out:'query_result'})
+{
+	"result" : "query_result",
+	"timeMillis" : 413,
+	"counts" : {
+		"input" : 13,
+		"emit" : 13,
+		"reduce" : 4,
+		"output" : 4
+	},
+	"ok" : 1
+}
+> db.query_result.find()
+{ "_id" : null, "value" : 65 }
+{ "_id" : "Comp", "value" : 45 }
+{ "_id" : "IT", "value" : 87.5 }
+{ "_id" : "comp", "value" : 90 }
+> db.student.mapReduce(mapf,reducef,{query:{subject:'dbms'},out:'result'})
+{
+	"result" : "result",
+	"timeMillis" : 393,
+	"counts" : {
+		"input" : 5,
+		"emit" : 5,
+		"reduce" : 2,
+		"output" : 2
+	},
+	"ok" : 1
+}
+> db.result.find()
+{ "_id" : "IT", "value" : 90 }
+{ "_id" : "comp", "value" : 90 }
+> 
+
