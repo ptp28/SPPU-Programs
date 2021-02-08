@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>JDBC CRUD OPERATIONS</title>
+<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body> 
+	<form method="POST" action="JDBCServlet">
+	
+	<table>
+	<tr>
+	<td>
+			<div>
+				<table>
+				<tr>
+					<td>
+					NAME : 
+					</td>
+					<td>
+						<input type="text" placeholder="Name" name="insertName">
+					</td>
+				</tr>
+				<tr>
+					<td>
+					SALARY :
+					</td>
+					<td>
+						<input type="number" placeholder="Salary" name="insertSalary">
+					</td>
+				</tr>
+				<tr>
+					<td>
+					POST :
+					</td>
+					<td>
+						<select name="insertPost">
+							<option value="CEO">CEO</option>
+							<option value="Chairman">Chairman</option>
+							<option value="Director">Director</option>
+							<option value="V.P. Operations">V.P. Operations</option>
+							<option value="V.P. Technology">V.P. Technology</option>
+							<option value="V.P. Marketing and Sales">V.P. Marketing and Sales</option>
+							<option value="Manager">Manager</option>
+							<option value="Hardware Team">Hardware Team</option>
+							<option value="Software Team">Software Team</option>
+							<option value="Other">Other</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="submit" value="INSERT" name="Submit">
+				</td>
+				</tr>
+				</table>
+			</div>
+	</td>
+	<td>
+			<div>
+				<table>
+					<tr>
+						<td>
+						NAME :
+						</td>
+						<td>
+							<input type="text" placeholder="Name" name="deleteName">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="submit" value="DELETE" name="Submit">
+						</td>
+					</tr>
+				</table>
+			</div>
+	</td>
+	<td>
+			<div>
+				<table>
+					<tr>
+						<td>
+						 EXISTING NAME :
+						</td>
+						<td>
+							<input type="text" placeholder="Name" name="exisingName">
+						</td>
+					</tr>
+					<tr>
+						<td>
+						NEW SALARY :
+						</td>
+						<td>
+							<input type="number" placeholder="Salary" name="newSalary">
+						</td>
+					</tr>
+					<tr>
+						<td>
+						NEW POST :
+						</td>
+						<td>
+							<select name="newPost">
+							<option value="CEO">CEO</option>
+							<option value="Chairman">Chairman</option>
+							<option value="Director">Director</option>
+							<option value="V.P. Operations">V.P. Operations</option>
+							<option value="V.P. Technology">V.P. Technology</option>
+							<option value="V.P. Marketing and Sales">V.P. Marketing and Sales</option>
+							<option value="Manager">Manager</option>
+							<option value="Hardware Team">Hardware Team</option>
+							<option value="Software Team">Software Team</option>
+							<option value="Other">Other</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="submit" value="UPDATE" name="Submit">
+						</td>
+					</tr>
+				</table>
+			</div>
+	</td>
+	</tr>
+	</table>
+	</form>
+</body>
+</html>
